@@ -3,4 +3,5 @@
     <string name="app_desc">Block your UI by clicking on this message.</string>
 
     <string name="channel_id">BLOCKUI_CHANNEL</string>
+    <string name="title_activity_overlay">OverlayActivity</string>
 </resources>
