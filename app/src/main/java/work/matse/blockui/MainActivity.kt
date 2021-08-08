@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startService() {
-        val overlayService = Intent(this, NotificationService::class.java)
+        val overlayService = Intent(this, ToastService::class.java)
         ContextCompat.startForegroundService(this, overlayService)
     }
 

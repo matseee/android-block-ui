@@ -11,6 +11,6 @@
     <string name="btnUnlock">Unlock</string>
 
     <string name="permissionTitle">Permission needed</string>
-    <string name="permissionDescription">Enable "Display over other apps".</string>
+    <string name="permissionDescription">Enable \'Display over other apps\'.</string>
     <string name="permissionGoToSettings">Go to settings</string>
 </resources>

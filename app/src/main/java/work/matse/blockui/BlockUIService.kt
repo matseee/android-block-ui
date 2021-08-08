@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.os.Build
 import android.os.IBinder
 import android.view.*
 import android.widget.Button
@@ -85,10 +86,12 @@ class BlockUIService : Service() {
                 baseContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         viewOverlay = inflater.inflate(R.layout.overlay, null)
-        viewOverlay!!.doOnAttach {
-            viewOverlay!!.setOnApplyWindowInsetsListener { v, insets ->
-                viewOverlay!!.windowInsetsController?.hide(WindowInsets.Type.statusBars())
-                return@setOnApplyWindowInsetsListener insets
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            viewOverlay!!.doOnAttach {
+                viewOverlay!!.setOnApplyWindowInsetsListener { v, insets ->
+                    viewOverlay!!.windowInsetsController!!.hide(WindowInsets.Type.statusBars())
+                    return@setOnApplyWindowInsetsListener insets
+                }
             }
         }
 

@@ -21,10 +21,6 @@
             android:exported="true"
             android:stopWithTask="true" />
 
-        <service
-            android:name=".NotificationService"
-            android:stopWithTask="true" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +30,8 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".ToastService" />
 
     </application>
 
