@@ -8,7 +8,7 @@ import android.os.IBinder
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
-
+import android.widget.Button
 
 class BlockUIService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -34,6 +34,12 @@ class BlockUIService : Service() {
             baseContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val view = inflater.inflate(R.layout.overlay, null)
+
+        val btnClose = view.findViewById<Button>(R.id.btnClose)
+        btnClose.setOnClickListener {
+            log("Button 'Close' clicked!")
+            windowManager!!.removeView(view)
+        }
 
         windowManager!!.addView(view, layoutParams)
         return START_NOT_STICKY
