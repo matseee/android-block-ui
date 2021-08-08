@@ -5,10 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.IBinder
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
+import androidx.core.view.doOnAttach
 
 class BlockUIService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -19,9 +18,13 @@ class BlockUIService : Service() {
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 PixelFormat.TRANSLUCENT
             )
+
+//        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//        + WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+//        + WindowManager.LayoutParams.FLAG_FULLSCREEN
 
         layoutParams.gravity = Gravity.TOP or Gravity.RIGHT
         layoutParams.x = 0
@@ -34,6 +37,19 @@ class BlockUIService : Service() {
             baseContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val view = inflater.inflate(R.layout.overlay, null)
+
+        view.doOnAttach {
+            log("onViewAttached")
+            val windowInsetController = view.windowInsetsController
+
+            view.setOnApplyWindowInsetsListener { v, insets ->
+                log("statusBars: " + insets.isVisible(WindowInsets.Type.statusBars()).toString())
+                log("systemBars: " + insets.isVisible(WindowInsets.Type.systemBars()).toString())
+
+                windowInsetController?.hide(WindowInsets.Type.statusBars())
+                return@setOnApplyWindowInsetsListener insets
+            }
+        }
 
         val btnClose = view.findViewById<Button>(R.id.btnClose)
         btnClose.setOnClickListener {
