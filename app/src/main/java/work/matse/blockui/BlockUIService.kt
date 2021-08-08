@@ -3,6 +3,7 @@ package work.matse.blockui
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
@@ -10,9 +11,11 @@ import android.view.*
 import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.doOnAttach
 
 class BlockUIService : Service() {
+    private var layoutOverlay: ConstraintLayout? = null
     private var layoutKeyboard: TableLayout? = null
     private var textViewKey: TextView? = null
 
@@ -60,10 +63,12 @@ class BlockUIService : Service() {
         if (layoutKeyboard!!.visibility == View.VISIBLE) {
             layoutKeyboard!!.visibility = View.INVISIBLE
             textViewKey!!.visibility = View.INVISIBLE
+            layoutOverlay!!.setBackgroundColor(Color.TRANSPARENT)
         } else {
             generateKey()
             layoutKeyboard!!.visibility = View.VISIBLE
             textViewKey!!.visibility = View.VISIBLE
+            layoutOverlay!!.background = getDrawable(R.color.black_overlay)
         }
     }
 
@@ -86,6 +91,7 @@ class BlockUIService : Service() {
                 baseContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         viewOverlay = inflater.inflate(R.layout.overlay, null)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             viewOverlay!!.doOnAttach {
                 viewOverlay!!.setOnApplyWindowInsetsListener { v, insets ->
@@ -95,6 +101,7 @@ class BlockUIService : Service() {
             }
         }
 
+        layoutOverlay = viewOverlay!!.findViewById(R.id.lyOverlay)
         textViewKey = viewOverlay!!.findViewById(R.id.tvKey)
         layoutKeyboard = viewOverlay!!.findViewById(R.id.tlKeyboard)
         viewOverlay!!.findViewById<Button>(R.id.btn1).setOnClickListener { processInput("1") }
@@ -120,7 +127,7 @@ class BlockUIService : Service() {
                         WindowManager.LayoutParams.MATCH_PARENT,
                         WindowManager.LayoutParams.MATCH_PARENT,
                         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN and WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                         PixelFormat.TRANSLUCENT
                 )
 
