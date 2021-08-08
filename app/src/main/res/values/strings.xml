@@ -4,4 +4,7 @@
 
     <string name="channel_id">BLOCKUI_CHANNEL</string>
     <string name="title_activity_overlay">OverlayActivity</string>
+
+    <string name="tvInfo">Go back and start blocking the ui with the notification.</string>
+    <string name="btnHide">back</string>
 </resources>

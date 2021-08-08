@@ -5,13 +5,24 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val btnHideApplication = findViewById<Button>(R.id.btnHideApplication)
+        btnHideApplication.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -31,16 +42,10 @@ class MainActivity : AppCompatActivity() {
     private fun startService() {
         val overlayService = Intent(this, ToastService::class.java)
         ContextCompat.startForegroundService(this, overlayService)
-
-        log("Started background service")
     }
 
     private fun checkOverlayDisplayPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            return Settings.canDrawOverlays(this)
-        } else {
-            true
-        }
+        return Settings.canDrawOverlays(this)
     }
 
     private fun requestOverlayDisplayPermission() {
