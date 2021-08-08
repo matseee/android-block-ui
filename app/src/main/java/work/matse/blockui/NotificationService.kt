@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 
-class ToastService : Service() {
+class NotificationService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         return null

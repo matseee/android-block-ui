@@ -18,8 +18,12 @@
         <service
             android:name=".BlockUIService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"
+            android:stopWithTask="true" />
+
+        <service
+            android:name=".NotificationService"
+            android:stopWithTask="true" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -30,7 +34,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ToastService" />
+
     </application>
 
 </manifest>

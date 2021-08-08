@@ -12,8 +12,8 @@ import android.widget.TextView
 import androidx.core.view.doOnAttach
 
 class BlockUIService : Service() {
-    private var keyboardLayout: TableLayout? = null
-    private var keyTextView: TextView? = null
+    private var layoutKeyboard: TableLayout? = null
+    private var textViewKey: TextView? = null
 
     private var windowManager: WindowManager? = null
     private var viewOverlay: View? = null
@@ -33,14 +33,10 @@ class BlockUIService : Service() {
         return START_NOT_STICKY
     }
 
-    private fun onKeyInput(str: String) {
-        currentInput += str
-        processInput()
-    }
-
-    private fun processInput() {
-        if (isFalseInput()) reset()
-         else if (isComplete()) close()
+    private fun processInput(char: String) {
+        currentInput += char
+        if (isFalseInput()) resetOverlay()
+         else if (isComplete()) closeOverlay()
     }
 
     private fun isFalseInput(): Boolean {
@@ -54,19 +50,19 @@ class BlockUIService : Service() {
         return currentInput == key
     }
 
-    private fun close() {
-        reset()
+    private fun closeOverlay() {
+        resetOverlay()
         windowManager!!.removeView(viewOverlay)
     }
 
     private fun toggleVisibility() {
-        if (keyboardLayout!!.visibility == View.VISIBLE) {
-            keyboardLayout!!.visibility = View.INVISIBLE
-            keyTextView!!.visibility = View.INVISIBLE
+        if (layoutKeyboard!!.visibility == View.VISIBLE) {
+            layoutKeyboard!!.visibility = View.INVISIBLE
+            textViewKey!!.visibility = View.INVISIBLE
         } else {
             generateKey()
-            keyboardLayout!!.visibility = View.VISIBLE
-            keyTextView!!.visibility = View.VISIBLE
+            layoutKeyboard!!.visibility = View.VISIBLE
+            textViewKey!!.visibility = View.VISIBLE
         }
     }
 
@@ -76,10 +72,10 @@ class BlockUIService : Service() {
             key += (1..9).random().toString()
         } while (key.length < 4)
 
-        keyTextView!!.text = key
+        textViewKey!!.text = key
     }
 
-    private fun reset() {
+    private fun resetOverlay() {
         currentInput = ""
         toggleVisibility()
     }
@@ -89,29 +85,26 @@ class BlockUIService : Service() {
                 baseContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         viewOverlay = inflater.inflate(R.layout.overlay, null)
-
         viewOverlay!!.doOnAttach {
-            val windowInsetController = viewOverlay!!.windowInsetsController
-
             viewOverlay!!.setOnApplyWindowInsetsListener { v, insets ->
-                windowInsetController?.hide(WindowInsets.Type.statusBars())
+                viewOverlay!!.windowInsetsController?.hide(WindowInsets.Type.statusBars())
                 return@setOnApplyWindowInsetsListener insets
             }
         }
 
-        keyTextView = viewOverlay!!.findViewById(R.id.tvKey)
-        keyboardLayout = viewOverlay!!.findViewById(R.id.tlKeyboard)
-        viewOverlay!!.findViewById<Button>(R.id.btn1).setOnClickListener { onKeyInput("1") }
-        viewOverlay!!.findViewById<Button>(R.id.btn2).setOnClickListener { onKeyInput("2") }
-        viewOverlay!!.findViewById<Button>(R.id.btn3).setOnClickListener { onKeyInput("3") }
-        viewOverlay!!.findViewById<Button>(R.id.btn4).setOnClickListener { onKeyInput("4") }
-        viewOverlay!!.findViewById<Button>(R.id.btn5).setOnClickListener { onKeyInput("5") }
-        viewOverlay!!.findViewById<Button>(R.id.btn6).setOnClickListener { onKeyInput("6") }
-        viewOverlay!!.findViewById<Button>(R.id.btn7).setOnClickListener { onKeyInput("7") }
-        viewOverlay!!.findViewById<Button>(R.id.btn8).setOnClickListener { onKeyInput("8") }
-        viewOverlay!!.findViewById<Button>(R.id.btn9).setOnClickListener { onKeyInput("9") }
+        textViewKey = viewOverlay!!.findViewById(R.id.tvKey)
+        layoutKeyboard = viewOverlay!!.findViewById(R.id.tlKeyboard)
+        viewOverlay!!.findViewById<Button>(R.id.btn1).setOnClickListener { processInput("1") }
+        viewOverlay!!.findViewById<Button>(R.id.btn2).setOnClickListener { processInput("2") }
+        viewOverlay!!.findViewById<Button>(R.id.btn3).setOnClickListener { processInput("3") }
+        viewOverlay!!.findViewById<Button>(R.id.btn4).setOnClickListener { processInput("4") }
+        viewOverlay!!.findViewById<Button>(R.id.btn5).setOnClickListener { processInput("5") }
+        viewOverlay!!.findViewById<Button>(R.id.btn6).setOnClickListener { processInput("6") }
+        viewOverlay!!.findViewById<Button>(R.id.btn7).setOnClickListener { processInput("7") }
+        viewOverlay!!.findViewById<Button>(R.id.btn8).setOnClickListener { processInput("8") }
+        viewOverlay!!.findViewById<Button>(R.id.btn9).setOnClickListener { processInput("9") }
 
-        viewOverlay!!.findViewById<Button>(R.id.btnHideApplication).setOnClickListener {
+        viewOverlay!!.findViewById<Button>(R.id.btnBack).setOnClickListener {
             toggleVisibility()
         }
 

@@ -17,9 +17,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnHideApplication = findViewById<Button>(R.id.btnHideApplication)
-        btnHideApplication.setOnClickListener {
+        findViewById<Button>(R.id.btnBack).setOnClickListener {
             onBackPressed()
+        }
+
+        findViewById<Button>(R.id.btnPowerOff).setOnClickListener {
+            finishAndRemoveTask()
         }
     }
 
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startService() {
-        val overlayService = Intent(this, ToastService::class.java)
+        val overlayService = Intent(this, NotificationService::class.java)
         ContextCompat.startForegroundService(this, overlayService)
     }
 
@@ -51,9 +54,9 @@ class MainActivity : AppCompatActivity() {
     private fun requestOverlayDisplayPermission() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setCancelable(true)
-        builder.setTitle("Screen Overlay Permission Needed")
-        builder.setMessage("Enable 'Display over other apps' from System Settings.")
-        builder.setPositiveButton("Open Settings", DialogInterface.OnClickListener { _, _ ->
+        builder.setTitle(R.string.permissionTitle)
+        builder.setMessage(R.string.permissionDescription)
+        builder.setPositiveButton(R.string.permissionGoToSettings, DialogInterface.OnClickListener { _, _ ->
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
             startActivityForResult(intent, Activity.RESULT_OK)
         })
