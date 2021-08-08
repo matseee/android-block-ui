@@ -31,7 +31,8 @@
         </activity>
 
         <service
-            android:name=".ToastService" />
+            android:name=".ToastService"
+            android:stopWithTask="true"/>
 
     </application>
 
