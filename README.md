@@ -1,5 +1,5 @@
-
-# ![LOGO](/app/src/main/ic_launcher-playstore.png =80x80) BlockUI
+![LOGO](./app/src/main/ic_launcher-playstore.png | width=64px)
+# BlockUI
 listen to podcast videos or documentaries while your phone is in your pocket.
 
 [Google Playstore](https://play.google.com/store/apps/details?id=work.matse.blockui)
