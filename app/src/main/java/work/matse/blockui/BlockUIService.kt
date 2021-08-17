@@ -3,6 +3,7 @@ package work.matse.blockui
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
@@ -87,6 +88,7 @@ class BlockUIService : Service() {
     }
 
     private fun createView(): View {
+        val sharedPreferences: SharedPreferences? = baseContext.getSharedPreferences("BlockUI", Context.MODE_PRIVATE)
         val inflater =
                 baseContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -100,8 +102,10 @@ class BlockUIService : Service() {
                 }
             }
         }
-
+        val color = sharedPreferences!!.getInt("darkMode", 0)
         layoutOverlay = viewOverlay!!.findViewById(R.id.lyOverlay)
+
+        layoutOverlay!!.setBackgroundColor(Color.argb(color, 0, 0, 0))
         textViewKey = viewOverlay!!.findViewById(R.id.tvKey)
         layoutKeyboard = viewOverlay!!.findViewById(R.id.tlKeyboard)
         viewOverlay!!.findViewById<Button>(R.id.btn1).setOnClickListener { processInput("1") }
