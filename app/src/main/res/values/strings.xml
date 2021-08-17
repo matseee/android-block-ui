@@ -5,6 +5,8 @@
     <string name="channel_id">BLOCKUI_CHANNEL</string>
 
     <string name="tvInfo">Block the UI by clicking on the notification.</string>
+    <string name="tvDarkmode">Darken display</string>
+
     <string name="btnHide">back</string>
     <string name="btnClose">close</string>
 
