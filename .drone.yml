@@ -4,6 +4,6 @@ name: build-android
 
 steps:
 - name: build
-  image: circleci/android:api-28
+  image: circleci/android:api-30
   commands:
     - ./gradlew test assemble -PdisablePreDex
