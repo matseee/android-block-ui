@@ -4,6 +4,6 @@ name: build-android
 
 steps:
 - name: build
-  image: docker pull circleci/android:api-26-node
+  image: circleci/android:api-26-node
   commands:
-  - ./gradlew
+    - ./gradlew
