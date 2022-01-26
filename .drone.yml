@@ -4,6 +4,6 @@ name: build-android
 
 steps:
 - name: build
-  image: circleci/android:api-26-node
+  image: circleci/android:api-28
   commands:
     - ./gradlew build --stacktrace
